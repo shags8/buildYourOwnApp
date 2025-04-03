@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Auto Zen</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_saved_locations">No Saved Locations</string>
+    <string name="tap_the_button_below_to_add_a_location">Tap the button below to add a location</string>
+    <string name="add_location">+ Add location</string>
+</resources>
