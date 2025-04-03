@@ -84,6 +84,15 @@ class AddLocationFragment : Fragment() {
         binding.toggleMode.check(R.id.btnSilent)
 
         setupListeners()
+        parentFragmentManager.setFragmentResultListener(
+            "location_selected",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val latitude = bundle.getDouble("latitude")
+            val longitude = bundle.getDouble("longitude")
+            binding.etLatitude.setText(latitude.toString())
+            binding.etLongitude.setText(longitude.toString())
+        }
     }
 
 
@@ -106,6 +115,9 @@ class AddLocationFragment : Fragment() {
         }
         binding.btnCurrentLocation.setOnClickListener {
             getCurrentLocation()
+        }
+        binding.btnPickLocation.setOnClickListener {
+            findNavController().navigate(R.id.action_addLocationFragment_to_selectLocationFragment)
         }
     }
 

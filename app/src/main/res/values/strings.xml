@@ -5,4 +5,14 @@
     <string name="no_saved_locations">No Saved Locations</string>
     <string name="tap_the_button_below_to_add_a_location">Tap the button below to add a location</string>
     <string name="add_location">+ Add location</string>
+    <string name="confirm_location">Confirm Location</string>
+    <string name="get_current_location">Get Current Location</string>
+    <string name="save_location">Save Location</string>
+    <string name="vibrate_mode">Vibrate Mode</string>
+    <string name="silent_mode">Silent Mode</string>
+    <string name="radius_100m">Radius: 100m</string>
+    <string name="get_location_from_map">Choose Location</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude">Latitude</string>
+    <string name="location_name">Location Name</string>
 </resources>
