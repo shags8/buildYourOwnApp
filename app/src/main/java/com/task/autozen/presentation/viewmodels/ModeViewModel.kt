@@ -55,6 +55,16 @@ class ModeViewModel(private val repository: ModeRepository) : ViewModel() {
         }
     }
 
+    fun setManualLocation(lat: Double, lon: Double) {
+        _selectedLocation.value = SavedLocationEntity(
+            name = "Manual Selection",
+            latitude = lat,
+            longitude = lon,
+            radius = 5f,
+            mode = 0
+        )
+    }
+
 }
 
 

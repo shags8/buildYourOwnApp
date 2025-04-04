@@ -73,7 +73,6 @@ class ModeSwitchService : Service() {
     }
 
     private fun startLocationUpdates() {
-        // set time-interval for checking locations
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5_000)
             .setMinUpdateIntervalMillis(5_000)
             .build()
@@ -96,7 +95,7 @@ class ModeSwitchService : Service() {
         fusedLocationClient.requestLocationUpdates(
             locationRequest,
             locationCallback,
-            mainLooper
+            Looper.getMainLooper()
         )
     }
 
@@ -130,6 +129,10 @@ class ModeSwitchService : Service() {
                 ModeRepositoryImpl(AppDatabase.getInstance(applicationContext).savedLocationDao())
             val savedLocations = repository.getSavedLocations()
 
+            var nearestLocation: Location? = null
+            var nearestMode: Int? = null
+            var minDistance = Float.MAX_VALUE
+
             for (savedLocation in savedLocations) {
                 val savedLatLng = Location("").apply {
                     latitude = savedLocation.latitude
@@ -138,17 +141,24 @@ class ModeSwitchService : Service() {
 
                 val distance = currentLocation.distanceTo(savedLatLng)
 
-                if (distance <= savedLocation.radius) {
-                    if (currentMode != savedLocation.mode) {
-                        setPhoneMode(savedLocation.mode)
-                        currentMode = savedLocation.mode
-                    }
-                    return@launch
+                if (distance <= savedLocation.radius && distance < minDistance) {
+                    minDistance = distance
+                    nearestLocation = savedLatLng
+                    nearestMode = savedLocation.mode
                 }
             }
-            resetPhoneMode()
+
+            if (nearestLocation != null && nearestMode != null) {
+                if (currentMode != nearestMode) {
+                    setPhoneMode(nearestMode)
+                    currentMode = nearestMode
+                }
+            } else {
+                resetPhoneMode() // No saved location found within radius, reset to normal
+            }
         }
     }
+
 
     private fun setPhoneMode(mode: Int) {
         val notificationManager =

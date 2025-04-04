@@ -38,6 +38,7 @@ class AddLocationFragment : Fragment() {
     private var selectedMode: Int = 0 // Silent Mode by Default
     private var radius: Float = 5f
     private var locationId: Int = -1
+    private var isLocationUpdated = false // Flag to track user selection
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,8 +76,8 @@ class AddLocationFragment : Fragment() {
         ) { _, bundle ->
             val latitude = bundle.getDouble("latitude")
             val longitude = bundle.getDouble("longitude")
-            binding.etLatitude.setText(latitude.toString())
-            binding.etLongitude.setText(longitude.toString())
+           viewModel.setManualLocation(latitude,longitude)
+            isLocationUpdated =true
         }
     }
 
@@ -87,8 +88,10 @@ class AddLocationFragment : Fragment() {
         viewModel.selectedLocation.observe(viewLifecycleOwner) { location ->
             location?.let {
                 binding.etLocationName.setText(it.name)
-                binding.etLatitude.setText(it.latitude.toString())
-                binding.etLongitude.setText(it.longitude.toString())
+                if (!isLocationUpdated) {
+                    binding.etLatitude.setText(it.latitude.toString())
+                    binding.etLongitude.setText(it.longitude.toString())
+                }
                 binding.sliderRadius.value = it.radius
                 binding.tvRadiusValue.text = "Radius: ${it.radius.toInt()}"
 
