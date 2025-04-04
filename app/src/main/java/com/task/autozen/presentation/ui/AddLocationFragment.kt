@@ -36,7 +36,7 @@ class AddLocationFragment : Fragment() {
     private lateinit var viewModel: ModeViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private var selectedMode: Int = 0 // Silent Mode by Default
-    private var radius: Float = 100f
+    private var radius: Float = 5f
     private var locationId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
