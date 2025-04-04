@@ -1,6 +1,6 @@
 # AutoZen - Smart Mode Switching
 
-AutoZen is an Android app that automatically switches your phone's sound mode (Silent/Vibrate) based on your location. Users can save specific locations with a defined radius, and the app will adjust the mode when they enter or leave the area. This helps in maintaining a distraction-free environment in places like offices, libraries, or meetings.
+AutoZen is an Android app that automatically switches your phone's sound mode (Silent/Vibrate) based on your location. Users can save specific locations with a defined radius, and the app will adjust the mode when they enter or leave the area. This helps maintain a distraction-free environment in places like offices, libraries, or meetings.
 
 ## Tech Stack & Challenges
 
@@ -10,10 +10,13 @@ AutoZen is built using:
 - **Google Location Services**
 - **Android MVVM Architecture**
 - **Coroutines**
-
+- **Single Activity Architecture**
+- **Jetpack Navigation Component with XML-based Navigation Graph**
 
 Coroutines are used for efficient background operations, ensuring smooth database access and location updates without blocking the UI.  
 A key challenge was optimizing location tracking while minimizing battery consumption.
+
+**Note:** We couldn't use WorkManager for background task scheduling due to its minimum periodic interval of 15 minutes. Instead, AutoZen uses a persistent foreground service to achieve near-real-time mode switching.
 
 ## Future Plans
 
