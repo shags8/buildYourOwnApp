@@ -35,12 +35,13 @@ class AddLocationFragment : Fragment() {
 
     private lateinit var viewModel: ModeViewModel
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private var selectedMode: Int = 0
+    private var selectedMode: Int = 0 // Silent Mode by Default
     private var radius: Float = 100f
     private var locationId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // from Home Fragment when edit clicked
         locationId = arguments?.getInt("locationId", -1) ?: -1
     }
 
@@ -58,7 +59,28 @@ class AddLocationFragment : Fragment() {
         val repository: ModeRepository = getRepository()
         viewModel =
             ViewModelProvider(this, ModeViewModelFactory(repository))[ModeViewModel::class.java]
+        //auto-fill existing data in case of edit
+        fillDetailsIfPresent()
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+        // default selection Silent
+        binding.toggleMode.check(R.id.btnSilent)
+
+        setupListeners()
+
+        //get details from SelectLocationFragment
+        parentFragmentManager.setFragmentResultListener(
+            "location_selected",
+            viewLifecycleOwner
+        ) { _, bundle ->
+            val latitude = bundle.getDouble("latitude")
+            val longitude = bundle.getDouble("longitude")
+            binding.etLatitude.setText(latitude.toString())
+            binding.etLongitude.setText(longitude.toString())
+        }
+    }
+
+    private fun fillDetailsIfPresent() {
         if (locationId != -1) {
             viewModel.fetchLocationById(locationId)
         }
@@ -79,22 +101,7 @@ class AddLocationFragment : Fragment() {
                 )
             }
         }
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        binding.toggleMode.check(R.id.btnSilent)
-
-        setupListeners()
-        parentFragmentManager.setFragmentResultListener(
-            "location_selected",
-            viewLifecycleOwner
-        ) { _, bundle ->
-            val latitude = bundle.getDouble("latitude")
-            val longitude = bundle.getDouble("longitude")
-            binding.etLatitude.setText(latitude.toString())
-            binding.etLongitude.setText(longitude.toString())
-        }
     }
-
 
     private fun setupListeners() {
         binding.sliderRadius.addOnChangeListener { _, value, _ ->
@@ -139,8 +146,8 @@ class AddLocationFragment : Fragment() {
             mode = selectedMode
         )
 
-        // Save location to ViewModel
         viewModel.saveLocation(savedLocation)
+        // for immediate update of Ringer Mode
         val intent = Intent(requireContext(), ModeSwitchService::class.java).apply {
             action = "UPDATE_MODE"
         }

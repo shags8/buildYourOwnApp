@@ -73,6 +73,7 @@ class ModeSwitchService : Service() {
     }
 
     private fun startLocationUpdates() {
+        // set time-interval for checking locations
         val locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5_000)
             .setMinUpdateIntervalMillis(5_000)
             .build()

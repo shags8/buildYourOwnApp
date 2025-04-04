@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.POST_NOTIFICATIONS
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            Log.d("MainActivity", "Requesting notification permission")
             requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }

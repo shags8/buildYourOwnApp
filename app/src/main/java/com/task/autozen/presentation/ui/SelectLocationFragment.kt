@@ -68,6 +68,7 @@ class SelectLocationFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun getCurrentLocation() {
+        // for zooming in on current location
         if (ActivityCompat.checkSelfPermission(
                 requireContext(), Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(

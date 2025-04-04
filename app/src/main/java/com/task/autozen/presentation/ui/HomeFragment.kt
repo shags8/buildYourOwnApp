@@ -68,6 +68,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun observeViewModel() {
+        //for observing which to show empty screen or not
         viewModel.savedLocations.observe(viewLifecycleOwner, Observer { locations ->
             if (locations.isEmpty()) {
                 updateUI(true)
